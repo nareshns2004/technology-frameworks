@@ -7,3 +7,4 @@
  * [Machine_Learning_Project](./Machine_Learning_Project)
  * [ML_Ops_Project](./ML_Ops_Project)
  * [NLP_Project](./NLP_Project)
+ * [GPU_Programming](./GPU_Programming)
