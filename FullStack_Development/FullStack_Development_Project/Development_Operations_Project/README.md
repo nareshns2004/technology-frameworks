@@ -1,1 +1,0 @@
-# Development Operations Project
