@@ -1,1 +1,0 @@
-# ai applications project
