@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naresh Kumar — AI/ML Infra Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1218;
+    --bg3: #151a22;
+    --border: #1e2630;
+    --border-bright: #2d3a4a;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --text-mid: #94a3b8;
+    --warn: #f59e0b;
+    --red: #ef4444;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .nav-brand span { color: var(--text-dim); font-weight: 400; font-size: 0.85rem; }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-status {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.75rem; color: var(--text-dim);
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent3);
+    box-shadow: 0 0 8px var(--accent3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 5rem 2rem 3rem;
+    max-width: 1100px; margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .hero-name .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--border-bright);
+    transition: -webkit-text-stroke-color 0.3s;
+  }
+  .hero-name .line2:hover { -webkit-text-stroke-color: var(--accent); }
+
+  .hero-role {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--text-mid);
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  .hero-role .highlight { color: var(--accent2); }
+
+  .hero-bio {
+    max-width: 580px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+  .tag {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 0.2rem 0.75rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .tag:hover { border-color: var(--accent); background: rgba(0,212,255,0.07); }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    cursor: pointer; border: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+  .btn-primary:hover { background: #33ddff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,212,255,0.25); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-mid);
+    border: 1px solid var(--border-bright);
+  }
+  .btn-outline:hover { border-color: var(--text-mid); color: var(--text); }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 80% 50%, black 30%, transparent 100%);
+    opacity: 0.35;
+  }
+
+  /* ─── SECTION ─── */
+  section {
+    max-width: 1100px; margin: 0 auto;
+    padding: 5rem 2rem;
+    position: relative;
+  }
+
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-bright), transparent);
+  }
+
+  /* ─── ROADMAP ─── */
+  .roadmap-svg-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .roadmap-svg-wrap svg text { font-family: var(--font-mono); }
+
+  /* ─── SKILLS GRID ─── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .skill-card {
+    background: var(--bg2);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .skill-card:hover { background: var(--bg3); }
+
+  .skill-cat {
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .skill-cat::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .skill-name {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .skill-items {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .skill-pill {
+    background: var(--bg);
+    border: 1px solid var(--border-bright);
+    color: var(--text-mid);
+    padding: 0.15rem 0.6rem;
+    border-radius: 2px;
+    font-size: 0.72rem;
+  }
+
+  .skill-bar-wrap { margin-top: 0.75rem; }
+  .skill-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.7rem; color: var(--text-dim);
+    margin-bottom: 0.3rem;
+  }
+  .skill-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+
+  /* ─── BLOG ─── */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .blog-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .blog-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .blog-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+  .blog-card:hover::before { opacity: 1; }
+
+  .blog-meta {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.72rem; color: var(--text-dim);
+  }
+  .blog-tag-badge {
+    background: rgba(0,212,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    font-size: 0.68rem;
+  }
+
+  .blog-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .blog-excerpt {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+  .blog-read {
+    font-size: 0.72rem;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 0.4rem;
+    text-decoration: none;
+  }
+
+  /* ─── ACHIEVEMENTS ─── */
+  .achieve-list { display: flex; flex-direction: column; gap: 1rem; }
+
+  .achieve-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .achieve-item:hover { border-color: var(--border-bright); }
+
+  .achieve-icon {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .achieve-body { flex: 1; }
+  .achieve-title {
+    font-family: var(--font-display);
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .achieve-desc {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .achieve-date {
+    font-size: 0.7rem; color: var(--text-dim);
+    white-space: nowrap; padding-top: 0.25rem;
+  }
+
+  /* ─── CONTACT ─── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); background: rgba(0,212,255,0.04); }
+  .contact-link-icon { font-size: 1.2rem; }
+  .contact-link-label {
+    font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .contact-link-val { font-size: 0.88rem; color: var(--accent); }
+
+  .contact-note {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.75rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .contact-note-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem; font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .contact-note p {
+    color: var(--text-dim); font-size: 0.82rem; line-height: 1.9;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.72rem; color: var(--text-dim);
+  }
+
+  /* ─── BLOG MODAL ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: center; justify-content: center;
+    padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    max-width: 680px; width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+  }
+  .modal-close {
+    position: sticky; top: 0; float: right;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { color: var(--text); border-color: var(--text-dim); }
+  .modal h2 {
+    font-family: var(--font-display);
+    font-size: 1.4rem; font-weight: 800;
+    margin-bottom: 0.5rem; clear: both;
+    line-height: 1.3;
+  }
+  .modal-meta { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+  .modal-body { font-size: 0.85rem; line-height: 1.95; color: var(--text-mid); }
+  .modal-body h3 {
+    font-family: var(--font-display);
+    font-size: 1rem; color: var(--accent);
+    margin: 1.5rem 0 0.5rem;
+  }
+  .modal-body code {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    color: var(--accent3);
+    font-size: 0.8rem;
+  }
+  .modal-body pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 1rem 0;
+    overflow-x: auto;
+    font-size: 0.78rem;
+    color: var(--accent3);
+    line-height: 1.7;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero-name { font-size: 2.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">nareshns2004 <span>/ kernel & infra</span></div>
+  <ul class="nav-links">
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#achievements">Wins</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <span class="status-dot"></span>
+    <span>Open to roles</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-eyebrow">Kernel · Networks · AI/ML Infrastructure</div>
+  <h1 class="hero-name">
+    Naresh<br>
+    <span class="line2">Kumar</span>
+  </h1>
+  <p class="hero-role">
+    Systems Engineer building <span class="highlight">AI/ML Infrastructure</span>
+  </p>
+  <p class="hero-bio">
+    I work at the intersection of Linux kernel internals, high-performance networking, and AI/ML accelerator infrastructure.
+    From writing eBPF programs to tuning DPDK datapaths, my focus is on squeezing every cycle out of the hardware stack.
+  </p>
+  <div class="hero-tags">
+    <span class="tag">eBPF / XDP</span>
+    <span class="tag">DPDK</span>
+    <span class="tag">RDMA / RoCE</span>
+    <span class="tag">SR-IOV</span>
+    <span class="tag">virtio / vhost</span>
+    <span class="tag">netfilter</span>
+    <span class="tag">tc / qdisc</span>
+    <span class="tag">GPU networking</span>
+    <span class="tag">netdev</span>
+    <span class="tag">Linux kernel</span>
+  </div>
+  <div class="hero-cta">
+    <a href="#blog" class="btn btn-primary">→ Read my blog</a>
+    <a href="#contact" class="btn btn-outline">Get in touch</a>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">AI/ML Infra Roadmap</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="roadmap-svg-wrap fade-in">
+    <svg viewBox="0 0 1000 640" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:100%">
+      <defs>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#2d3a4a"/>
+        </marker>
+        <marker id="arr-active" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#00d4ff"/>
+        </marker>
+        <linearGradient id="gAcc" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.6"/>
+        </linearGradient>
+      </defs>
+
+      <!-- column labels -->
+      <text x="100" y="30" fill="#00d4ff" font-size="10" text-anchor="middle" letter-spacing="2" opacity="0.7">FOUNDATION</text>
+      <text x="330" y="30" fill="#00d4ff" font-size="10" text-anchor="middle" letter-spacing="2" opacity="0.7">NETWORKING</text>
+      <text x="570" y="30" fill="#7c3aed" font-size="10" text-anchor="middle" letter-spacing="2" opacity="0.7">ACCELERATORS</text>
+      <text x="810" y="30" fill="#10b981" font-size="10" text-anchor="middle" letter-spacing="2" opacity="0.7">AI/ML INFRA</text>
+      <text x="970" y="30" fill="#f59e0b" font-size="10" text-anchor="middle" letter-spacing="2" opacity="0.7">ADVANCED</text>
+
+      <!-- vertical column lines -->
+      <line x1="215" y1="45" x2="215" y2="620" stroke="#1e2630" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="450" y1="45" x2="450" y2="620" stroke="#1e2630" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="690" y1="45" x2="690" y2="620" stroke="#1e2630" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="895" y1="45" x2="895" y2="620" stroke="#1e2630" stroke-width="1" stroke-dasharray="4,4"/>
+
+      <!-- ── FOUNDATION NODES ── -->
+      <!-- Linux Kernel Internals -->
+      <rect x="20" y="55" width="160" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="20" y="55" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="35" y="77" fill="#e2e8f0" font-size="10" font-weight="700">Linux Kernel</text>
+      <text x="35" y="91" fill="#64748b" font-size="8.5">VFS · MM · scheduler · syscalls</text>
+      <text x="152" y="62" fill="#10b981" font-size="8">✓</text>
+
+      <!-- C / Rust Systems -->
+      <rect x="20" y="125" width="160" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="20" y="125" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="35" y="147" fill="#e2e8f0" font-size="10" font-weight="700">C / Rust Systems</text>
+      <text x="35" y="161" fill="#64748b" font-size="8.5">unsafe Rust · libc · perf tooling</text>
+      <text x="152" y="132" fill="#10b981" font-size="8">✓</text>
+
+      <!-- Device Drivers -->
+      <rect x="20" y="195" width="160" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="20" y="195" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="35" y="217" fill="#e2e8f0" font-size="10" font-weight="700">Device Drivers</text>
+      <text x="35" y="231" fill="#64748b" font-size="8.5">PCI · PCIe · char/net drivers</text>
+      <text x="152" y="202" fill="#10b981" font-size="8">✓</text>
+
+      <!-- Tracing & Observability -->
+      <rect x="20" y="265" width="160" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="20" y="265" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="35" y="287" fill="#e2e8f0" font-size="10" font-weight="700">Tracing & Observability</text>
+      <text x="35" y="301" fill="#64748b" font-size="8.5">perf · ftrace · bpftrace · BCC</text>
+      <text x="152" y="272" fill="#10b981" font-size="8">✓</text>
+
+      <!-- ── NETWORKING NODES ── -->
+      <rect x="245" y="55" width="165" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="245" y="55" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="260" y="77" fill="#e2e8f0" font-size="10" font-weight="700">eBPF / XDP</text>
+      <text x="260" y="91" fill="#64748b" font-size="8.5">kernel bypass · packet filter · maps</text>
+      <text x="392" y="62" fill="#10b981" font-size="8">✓</text>
+
+      <rect x="245" y="125" width="165" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="245" y="125" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="260" y="147" fill="#e2e8f0" font-size="10" font-weight="700">DPDK</text>
+      <text x="260" y="161" fill="#64748b" font-size="8.5">PMD · huge pages · RSS / FDIR</text>
+      <text x="392" y="132" fill="#10b981" font-size="8">✓</text>
+
+      <rect x="245" y="195" width="165" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="245" y="195" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="260" y="217" fill="#e2e8f0" font-size="10" font-weight="700">netfilter / tc / qdisc</text>
+      <text x="260" y="231" fill="#64748b" font-size="8.5">conntrack · HTB · fq_codel</text>
+
+      <rect x="245" y="265" width="165" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="245" y="265" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="260" y="287" fill="#e2e8f0" font-size="10" font-weight="700">SR-IOV / VF / virtio</text>
+      <text x="260" y="301" fill="#64748b" font-size="8.5">vhost-net · VFIO · passthrough</text>
+
+      <rect x="245" y="335" width="165" height="50" rx="4" fill="#0f1218" stroke="#2d3a4a" stroke-width="1.5"/>
+      <rect x="245" y="335" width="4" height="50" rx="2" fill="#00d4ff"/>
+      <text x="260" y="357" fill="#e2e8f0" font-size="10" font-weight="700">InfiniBand / RoCE</text>
+      <text x="260" y="371" fill="#64748b" font-size="8.5">libibverbs · CM · QP management</text>
+
+      <!-- ── ACCELERATORS ── -->
+      <rect x="470" y="55" width="195" height="50" rx="4" fill="#0f1218" stroke="#7c3aed" stroke-width="1.5"/>
+      <rect x="470" y="55" width="4" height="50" rx="2" fill="#7c3aed"/>
+      <text x="485" y="77" fill="#e2e8f0" font-size="10" font-weight="700">RDMA / ROCE v2</text>
+      <text x="485" y="91" fill="#64748b" font-size="8.5">zero-copy · SEND/RECV/WRITE/READ</text>
+
+      <rect x="470" y="125" width="195" height="50" rx="4" fill="#0f1218" stroke="#7c3aed" stroke-width="1.5"/>
+      <rect x="470" y="125" width="4" height="50" rx="2" fill="#7c3aed"/>
+      <text x="485" y="147" fill="#e2e8f0" font-size="10" font-weight="700">GPU Architecture</text>
+      <text x="485" y="161" fill="#64748b" font-size="8.5">CUDA streams · UVM · PCIe BAR</text>
+
+      <rect x="470" y="195" width="195" height="50" rx="4" fill="#0f1218" stroke="#7c3aed" stroke-width="1.5"/>
+      <rect x="470" y="195" width="4" height="50" rx="2" fill="#7c3aed"/>
+      <text x="485" y="217" fill="#e2e8f0" font-size="10" font-weight="700">GPUDirect / NVLink</text>
+      <text x="485" y="231" fill="#64748b" font-size="8.5">P2P DMA · NVSwitch topology</text>
+
+      <rect x="470" y="265" width="195" height="50" rx="4" fill="#0f1218" stroke="#7c3aed" stroke-width="1.5"/>
+      <rect x="470" y="265" width="4" height="50" rx="2" fill="#7c3aed"/>
+      <text x="485" y="287" fill="#e2e8f0" font-size="10" font-weight="700">DMA / IOMMU</text>
+      <text x="485" y="301" fill="#64748b" font-size="8.5">scatter-gather · SMMU · ATS</text>
+
+      <rect x="470" y="335" width="195" height="50" rx="4" fill="#0f1218" stroke="#7c3aed" stroke-width="1.5"/>
+      <rect x="470" y="335" width="4" height="50" rx="2" fill="#7c3aed"/>
+      <text x="485" y="357" fill="#e2e8f0" font-size="10" font-weight="700">SmartNIC / DPU</text>
+      <text x="485" y="371" fill="#64748b" font-size="8.5">DOCA · NVIDIA BlueField offload</text>
+
+      <!-- ── AI/ML INFRA ── -->
+      <rect x="710" y="55" width="175" height="50" rx="4" fill="#0f1218" stroke="#10b981" stroke-width="1.5"/>
+      <rect x="710" y="55" width="4" height="50" rx="2" fill="#10b981"/>
+      <text x="725" y="77" fill="#e2e8f0" font-size="10" font-weight="700">AI Cluster Networking</text>
+      <text x="725" y="91" fill="#64748b" font-size="8.5">Rail-optimized · fat-tree · RailOpt</text>
+
+      <rect x="710" y="125" width="175" height="50" rx="4" fill="#0f1218" stroke="#10b981" stroke-width="1.5"/>
+      <rect x="710" y="125" width="4" height="50" rx="2" fill="#10b981"/>
+      <text x="725" y="147" fill="#e2e8f0" font-size="10" font-weight="700">NCCL / MPI</text>
+      <text x="725" y="161" fill="#64748b" font-size="8.5">allreduce · ring-allreduce tuning</text>
+
+      <rect x="710" y="195" width="175" height="50" rx="4" fill="#0f1218" stroke="#10b981" stroke-width="1.5"/>
+      <rect x="710" y="195" width="4" height="50" rx="2" fill="#10b981"/>
+      <text x="725" y="217" fill="#e2e8f0" font-size="10" font-weight="700">Storage for AI</text>
+      <text x="725" y="231" fill="#64748b" font-size="8.5">NVMe-oF · Lustre · GDS</text>
+
+      <rect x="710" y="265" width="175" height="50" rx="4" fill="#0f1218" stroke="#10b981" stroke-width="1.5"/>
+      <rect x="710" y="265" width="4" height="50" rx="2" fill="#10b981"/>
+      <text x="725" y="287" fill="#e2e8f0" font-size="10" font-weight="700">Container / Orchestration</text>
+      <text x="725" y="301" fill="#64748b" font-size="8.5">K8s device plugins · GPU operator</text>
+
+      <!-- ── ADVANCED ── -->
+      <rect x="900" y="125" width="90" height="50" rx="4" fill="#0f1218" stroke="#f59e0b" stroke-width="1.5"/>
+      <rect x="900" y="125" width="4" height="50" rx="2" fill="#f59e0b"/>
+      <text x="913" y="145" fill="#e2e8f0" font-size="9" font-weight="700">Custom</text>
+      <text x="913" y="158" fill="#e2e8f0" font-size="9" font-weight="700">ASIC/FPGA</text>
+      <text x="913" y="168" fill="#64748b" font-size="7.5">Verilog · HLS</text>
+
+      <rect x="900" y="200" width="90" height="50" rx="4" fill="#0f1218" stroke="#f59e0b" stroke-width="1.5"/>
+      <rect x="900" y="200" width="4" height="50" rx="2" fill="#f59e0b"/>
+      <text x="913" y="220" fill="#e2e8f0" font-size="9" font-weight="700">Kernel</text>
+      <text x="913" y="233" fill="#e2e8f0" font-size="9" font-weight="700">Contributions</text>
+      <text x="913" y="243" fill="#64748b" font-size="7.5">upstream patches</text>
+
+      <rect x="900" y="275" width="90" height="50" rx="4" fill="#0f1218" stroke="#f59e0b" stroke-width="1.5"/>
+      <rect x="900" y="275" width="4" height="50" rx="2" fill="#f59e0b"/>
+      <text x="913" y="295" fill="#e2e8f0" font-size="9" font-weight="700">P4 / eBPF</text>
+      <text x="913" y="308" fill="#e2e8f0" font-size="9" font-weight="700">Offload</text>
+      <text x="913" y="318" fill="#64748b" font-size="7.5">programmable data planes</text>
+
+      <!-- ── CONNECTOR ARROWS ── -->
+      <!-- Foundation → Networking -->
+      <line x1="180" y1="80" x2="243" y2="80" stroke="#2d3a4a" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="180" y1="150" x2="243" y2="150" stroke="#2d3a4a" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="180" y1="220" x2="243" y2="310" stroke="#2d3a4a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+      <!-- Networking → Accelerators -->
+      <line x1="410" y1="80" x2="468" y2="80" stroke="#2d3a4a" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="410" y1="360" x2="468" y2="290" stroke="#2d3a4a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+      <!-- Accelerators → AI/ML -->
+      <line x1="665" y1="80" x2="708" y2="80" stroke="#10b981" stroke-width="1.2" marker-end="url(#arr-active)" opacity="0.7"/>
+      <line x1="665" y1="150" x2="708" y2="150" stroke="#10b981" stroke-width="1.2" marker-end="url(#arr-active)" opacity="0.7"/>
+      <!-- AI/ML → Advanced -->
+      <line x1="885" y1="150" x2="898" y2="150" stroke="#f59e0b" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="885" y1="220" x2="898" y2="225" stroke="#f59e0b" stroke-width="1" marker-end="url(#arr)"/>
+
+      <!-- LEGEND -->
+      <rect x="20" y="490" width="12" height="12" rx="2" fill="#10b981" opacity="0.8"/>
+      <text x="38" y="501" fill="#64748b" font-size="9">Completed</text>
+      <rect x="90" y="490" width="12" height="12" rx="2" fill="#2d3a4a"/>
+      <text x="108" y="501" fill="#64748b" font-size="9">In Progress / Planned</text>
+      <rect x="230" y="490" width="12" height="12" rx="2" fill="#f59e0b" opacity="0.8"/>
+      <text x="248" y="501" fill="#64748b" font-size="9">Advanced / Stretch</text>
+
+      <!-- PROGRESS BAR AREA -->
+      <text x="20" y="530" fill="#64748b" font-size="8.5" letter-spacing="1">OVERALL JOURNEY</text>
+      <rect x="20" y="540" width="800" height="6" rx="3" fill="#1e2630"/>
+      <rect x="20" y="540" width="320" height="6" rx="3" fill="url(#gAcc)"/>
+      <text x="348" y="550" fill="#00d4ff" font-size="9">~40% complete</text>
+
+      <!-- Stage labels on bar -->
+      <text x="20" y="570" fill="#64748b" font-size="8">Foundation</text>
+      <text x="210" y="570" fill="#64748b" font-size="8">Networking</text>
+      <text x="400" y="570" fill="#64748b" font-size="8">Accelerators</text>
+      <text x="590" y="570" fill="#64748b" font-size="8">AI Infra</text>
+      <text x="750" y="570" fill="#64748b" font-size="8">Advanced</text>
+    </svg>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Skills & Stack</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-card fade-in">
+      <div class="skill-cat" style="color:#00d4ff">Kernel & Systems</div>
+      <div class="skill-name">Linux Kernel</div>
+      <div class="skill-items">
+        <span class="skill-pill">kernel modules</span>
+        <span class="skill-pill">sched</span>
+        <span class="skill-pill">VFS</span>
+        <span class="skill-pill">memory mgmt</span>
+        <span class="skill-pill">netdev</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-label"><span>Proficiency</span><span style="color:#00d4ff">85%</span></div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width:85%;background:#00d4ff"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card fade-in">
+      <div class="skill-cat" style="color:#00d4ff">High-Perf Networking</div>
+      <div class="skill-name">eBPF / XDP / DPDK</div>
+      <div class="skill-items">
+        <span class="skill-pill">XDP programs</span>
+        <span class="skill-pill">TC hooks</span>
+        <span class="skill-pill">BPF maps</span>
+        <span class="skill-pill">PMD</span>
+        <span class="skill-pill">DPDK mbuf</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-label"><span>Proficiency</span><span style="color:#00d4ff">80%</span></div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width:80%;background:#00d4ff"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card fade-in">
+      <div class="skill-cat" style="color:#7c3aed">Virtualization</div>
+      <div class="skill-name">SR-IOV / virtio</div>
+      <div class="skill-items">
+        <span class="skill-pill">VF management</span>
+        <span class="skill-pill">VFIO</span>
+        <span class="skill-pill">vhost-net</span>
+        <span class="skill-pill">QEMU</span>
+        <span class="skill-pill">KVM</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-label"><span>Proficiency</span><span style="color:#7c3aed">70%</span></div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width:70%;background:#7c3aed"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card fade-in">
+      <div class="skill-cat" style="color:#7c3aed">RDMA / Fabric</div>
+      <div class="skill-name">InfiniBand / RoCE</div>
+      <div class="skill-items">
+        <span class="skill-pill">libibverbs</span>
+        <span class="skill-pill">QP / CQ</span>
+        <span class="skill-pill">RDMA Write</span>
+        <span class="skill-pill">RoCE v2</span>
+        <span class="skill-pill">ECN/PFC</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-label"><span>Proficiency</span><span style="color:#7c3aed">65%</span></div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width:65%;background:#7c3aed"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card fade-in">
+      <div class="skill-cat" style="color:#10b981">Languages</div>
+      <div class="skill-name">C / Rust / Python</div>
+      <div class="skill-items">
+        <span class="skill-pill">C99</span>
+        <span class="skill-pill">unsafe Rust</span>
+        <span class="skill-pill">libbpf</span>
+        <span class="skill-pill">Python scripts</span>
+        <span class="skill-pill">Go</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-label"><span>Proficiency</span><span style="color:#10b981">82%</span></div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width:82%;background:#10b981"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card fade-in">
+      <div class="skill-cat" style="color:#10b981">Observability</div>
+      <div class="skill-name">Perf & Tracing</div>
+      <div class="skill-items">
+        <span class="skill-pill">perf</span>
+        <span class="skill-pill">ftrace</span>
+        <span class="skill-pill">bpftrace</span>
+        <span class="skill-pill">BCC</span>
+        <span class="skill-pill">strace / ltrace</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-label"><span>Proficiency</span><span style="color:#10b981">75%</span></div>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width:75%;background:#10b981"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Blog</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="blog-grid">
+
+    <div class="blog-card fade-in" onclick="openModal('blog1')">
+      <div class="blog-meta">
+        <span class="blog-tag-badge">eBPF</span>
+        <span>Apr 2025 · 8 min read</span>
+      </div>
+      <div class="blog-title">Writing Your First XDP Program: Packet Drop at Line Rate</div>
+      <div class="blog-excerpt">How I built a kernel-bypass packet filter using XDP that processes 14 Mpps on a single core — and what I learned about BPF maps, verifier errors, and the AF_XDP socket interface.</div>
+      <a class="blog-read">Read post →</a>
+    </div>
+
+    <div class="blog-card fade-in" onclick="openModal('blog2')">
+      <div class="blog-meta">
+        <span class="blog-tag-badge">DPDK</span>
+        <span>Mar 2025 · 10 min read</span>
+      </div>
+      <div class="blog-title">DPDK PMD Internals: How Poll Mode Drivers Kill Interrupt Overhead</div>
+      <div class="blog-excerpt">A deep dive into DPDK's poll mode driver model, huge page allocation, NIC RSS configuration, and why removing interrupts is the biggest win in high-throughput packet I/O.</div>
+      <a class="blog-read">Read post →</a>
+    </div>
+
+    <div class="blog-card fade-in" onclick="openModal('blog3')">
+      <div class="blog-meta">
+        <span class="blog-tag-badge">RDMA</span>
+        <span>Feb 2025 · 12 min read</span>
+      </div>
+      <div class="blog-title">RDMA from Scratch: Queue Pairs, Completions, and Zero-Copy Transfers</div>
+      <div class="blog-excerpt">Understanding the verbs API, how protection domains and memory regions work, and writing a simple RDMA Write benchmark that achieves sub-2μs latency between two hosts.</div>
+      <a class="blog-read">Read post →</a>
+    </div>
+
+    <div class="blog-card fade-in" onclick="openModal('blog4')">
+      <div class="blog-meta">
+        <span class="blog-tag-badge">AI Infra</span>
+        <span>Jan 2025 · 7 min read</span>
+      </div>
+      <div class="blog-title">Why AI Clusters Need RoCE: NCCL, Congestion, and PFC Deadlocks</div>
+      <div class="blog-excerpt">How GPU-to-GPU communication in distributed training works, why RoCE v2 is preferred over InfiniBand in hyperscale deployments, and how PFC pause frames can deadlock your whole fabric.</div>
+      <a class="blog-read">Read post →</a>
+    </div>
+
+    <div class="blog-card fade-in" onclick="openModal('blog5')">
+      <div class="blog-meta">
+        <span class="blog-tag-badge">Kernel</span>
+        <span>Dec 2024 · 9 min read</span>
+      </div>
+      <div class="blog-title">SR-IOV Deep Dive: Virtual Functions and the VFIO Framework</div>
+      <div class="blog-excerpt">How SR-IOV splits a physical NIC into virtual functions, how the VFIO driver exposes them safely to VMs, and the performance implications vs. software switching with OVS.</div>
+      <a class="blog-read">Read post →</a>
+    </div>
+
+    <div class="blog-card fade-in" style="border-style:dashed;cursor:default;">
+      <div class="blog-meta"><span class="blog-tag-badge" style="color:#f59e0b;background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2)">Coming Soon</span></div>
+      <div class="blog-title" style="color:var(--text-dim)">GPUDirect RDMA: Bypassing the CPU for DMA Transfers to GPU Memory</div>
+      <div class="blog-excerpt">How GPUDirect allows NIC ↔ GPU direct DMA, the BAR mapping trick, and benchmarking MPI collectives with vs. without GPUDirect enabled.</div>
+      <a class="blog-read" style="color:var(--text-dim)">Draft in progress…</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Achievements</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="achieve-list">
+
+    <div class="achieve-item fade-in">
+      <div class="achieve-icon" style="background:rgba(0,212,255,0.1)">🛠️</div>
+      <div class="achieve-body">
+        <div class="achieve-title">Built a 14 Mpps XDP Packet Classifier</div>
+        <div class="achieve-desc">Designed and implemented a multi-rule stateless packet classifier using XDP + BPF maps that handles 14 million packets per second on a single CPU core, with sub-10ns per-packet processing overhead.</div>
+      </div>
+      <div class="achieve-date">Apr 2025</div>
+    </div>
+
+    <div class="achieve-item fade-in">
+      <div class="achieve-icon" style="background:rgba(124,58,237,0.1)">📄</div>
+      <div class="achieve-body">
+        <div class="achieve-title">Open Source Contribution — libbpf</div>
+        <div class="achieve-desc">Submitted and merged a bug fix for incorrect BTF type resolution in libbpf when dealing with anonymous structs inside unions. First upstream kernel-adjacent contribution.</div>
+      </div>
+      <div class="achieve-date">Mar 2025</div>
+    </div>
+
+    <div class="achieve-item fade-in">
+      <div class="achieve-icon" style="background:rgba(16,185,129,0.1)">🎓</div>
+      <div class="achieve-body">
+        <div class="achieve-title">Completed LFD460: Linux Kernel Internals & Development</div>
+        <div class="achieve-desc">Finished the Linux Foundation's advanced kernel development course covering driver writing, kernel debugging, memory management, and synchronization primitives. Scored in top 5% of cohort.</div>
+      </div>
+      <div class="achieve-date">Feb 2025</div>
+    </div>
+
+    <div class="achieve-item fade-in">
+      <div class="achieve-icon" style="background:rgba(245,158,11,0.1)">🔬</div>
+      <div class="achieve-body">
+        <div class="achieve-title">Benchmarked RDMA Write at 1.8μs Latency</div>
+        <div class="achieve-desc">Set up a dual-host RDMA testbed with Mellanox ConnectX-5 NICs, tuned ECN and PFC parameters, and achieved 1.8μs median latency on 64-byte RDMA Write operations over RoCE v2.</div>
+      </div>
+      <div class="achieve-date">Jan 2025</div>
+    </div>
+
+    <div class="achieve-item fade-in">
+      <div class="achieve-icon" style="background:rgba(0,212,255,0.1)">📝</div>
+      <div class="achieve-body">
+        <div class="achieve-title">Started this Blog & Technical Journey Log</div>
+        <div class="achieve-desc">Launched this site as a public accountability log for my AI/ML Infrastructure learning path — documenting experiments, benchmarks, and deep dives as I build toward kernel + networking roles at AI companies.</div>
+      </div>
+      <div class="achieve-date">Dec 2024</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <a href="https://linkedin.com/in/nareshns2004" class="contact-link" target="_blank">
+        <span class="contact-link-icon">in</span>
+        <div>
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-val">linkedin.com/in/nareshns2004</div>
+        </div>
+      </a>
+      <a href="https://github.com/nareshns2004" class="contact-link" target="_blank">
+        <span class="contact-link-icon">⌥</span>
+        <div>
+          <div class="contact-link-label">GitHub</div>
+          <div class="contact-link-val">github.com/nareshns2004</div>
+        </div>
+      </a>
+      <a href="mailto:naresh@example.com" class="contact-link">
+        <span class="contact-link-icon">@</span>
+        <div>
+          <div class="contact-link-label">Email</div>
+          <div class="contact-link-val">nareshns2004@gmail.com</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="contact-note">
+      <div class="contact-note-title">Currently open to kernel & networking roles</div>
+      <p>
+        I'm actively looking for roles in semiconductor, networking, and AI/ML infrastructure companies.
+        If you're building low-latency systems, HPC fabrics, or AI accelerator software — let's talk.
+        Target locations include Canada 🇨🇦 and Western Europe (Germany / Netherlands) 🇩🇪🇳🇱.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>nareshns2004</span>
+  <span style="color:var(--border-bright)">kernel · networks · AI infra</span>
+</footer>
+
+<!-- ── BLOG MODALS ── -->
+<div class="modal-overlay" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeAllModals()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const posts = {
+  blog1: {
+    title: "Writing Your First XDP Program: Packet Drop at Line Rate",
+    meta: "Apr 12, 2025 · eBPF · 8 min read",
+    body: `
+<h3>Background</h3>
+<p>XDP (eXpress Data Path) lets you attach a BPF program directly to a network driver's RX path — before the kernel's networking stack even sees the packet. This means you can drop, redirect, or modify packets at the absolute earliest point, achieving line-rate performance on a single core.</p>
+
+<h3>The Program</h3>
+<p>Here's the minimal XDP drop program:</p>
+<pre>SEC("xdp")
+int xdp_drop_all(struct xdp_md *ctx) {
+    return XDP_DROP;
+}</pre>
+<p>Load it with <code>ip link set dev eth0 xdp obj xdp_drop.o</code>. That's it — everything inbound on eth0 is dropped at the NIC driver level.</p>
+
+<h3>Adding a BPF Map for Dynamic Rules</h3>
+<p>The interesting part is making this dynamic. I used a <code>BPF_MAP_TYPE_LPM_TRIE</code> to store CIDR blocks to block, and a <code>BPF_MAP_TYPE_PERCPU_ARRAY</code> for per-CPU drop counters. The verifier ensures no unbounded loops, which forces you to think carefully about lookup depth.</p>
+
+<h3>Results</h3>
+<p>On a single Xeon core with a Mellanox ConnectX-5 NIC in native XDP mode, I measured <strong>14.2 Mpps</strong> drop throughput using <code>pktgen</code> as the sender. CPU utilization stayed under 40%. The same workload via iptables saturated the core at ~3 Mpps.</p>
+
+<h3>Gotchas</h3>
+<p>The BPF verifier is strict about pointer arithmetic — you must always bounds-check <code>data + offset</code> against <code>data_end</code> before dereferencing. Also, not all drivers support native XDP; some fall back to generic XDP which runs post-GRO and is much slower.</p>
+    `
+  },
+  blog2: {
+    title: "DPDK PMD Internals: How Poll Mode Drivers Kill Interrupt Overhead",
+    meta: "Mar 5, 2025 · DPDK · 10 min read",
+    body: `
+<h3>The Problem with Interrupts</h3>
+<p>Traditional NIC drivers use interrupts to signal that a packet has arrived. At 10 Gbps with 64-byte frames, that's ~14.8 million interrupts per second — enough to saturate a modern CPU just handling interrupt overhead, before a single byte of packet data is processed.</p>
+
+<h3>DPDK's Answer: Poll Mode Drivers</h3>
+<p>DPDK's PMD model dedicates a CPU core to continuously polling the NIC's RX descriptor ring. No interrupts, no context switches, no scheduler involvement. The core burns 100% CPU, but it can handle ~30 Mpps on a single core on modern NICs.</p>
+
+<h3>Memory Layout</h3>
+<p>DPDK allocates packet buffers from huge pages (1G or 2M) to avoid TLB misses. Mbufs (<code>rte_mbuf</code>) are pre-allocated in a mempool and passed through the ring zero-copy. The NIC DMA-writes directly into these pre-mapped buffers via the descriptor ring.</p>
+
+<pre>struct rte_mempool *mbuf_pool = rte_pktmbuf_pool_create(
+    "MBUF_POOL", NUM_MBUFS, MBUF_CACHE_SIZE,
+    0, RTE_MBUF_DEFAULT_BUF_SIZE, rte_socket_id());
+
+nb_rx = rte_eth_rx_burst(port, 0, bufs, BURST_SIZE);</pre>
+
+<h3>RSS and Flow Director</h3>
+<p>To scale across multiple cores, DPDK uses Receive Side Scaling (RSS) to hash flows to queues, with each queue pinned to a dedicated core. Flow Director (FDIR) adds exact-match or signature-based steering on top of RSS for more control.</p>
+    `
+  },
+  blog3: {
+    title: "RDMA from Scratch: Queue Pairs, Completions, and Zero-Copy Transfers",
+    meta: "Feb 18, 2025 · RDMA · 12 min read",
+    body: `
+<h3>Why RDMA?</h3>
+<p>Remote Direct Memory Access lets one machine read or write another machine's memory without involving the remote CPU. For AI training, this means model parameters and gradients can move between GPUs across the network without any CPU memcpy or kernel involvement in the hot path.</p>
+
+<h3>The Verbs API</h3>
+<p>The libibverbs API is notoriously verbose, but the core primitives are:</p>
+<pre>struct ibv_pd *pd = ibv_alloc_pd(ctx);
+struct ibv_mr *mr = ibv_reg_mr(pd, buf, buf_size,
+    IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE);
+struct ibv_qp *qp = ibv_create_qp(pd, &qp_init_attr);</pre>
+<p>The memory region registration pins the buffer in physical memory and gives the NIC an RKEY (remote key) that the remote side uses to authorize writes.</p>
+
+<h3>Queue Pair State Machine</h3>
+<p>A QP must be transitioned through: RESET → INIT → RTR (Ready To Receive) → RTS (Ready To Send) before it can be used. Each transition requires setting parameters like PSN (packet sequence number), path MTU, and the remote QP number exchanged out-of-band.</p>
+
+<h3>Benchmark Results</h3>
+<p>Using <code>ib_write_lat</code> on ConnectX-5 with RoCE v2:</p>
+<pre>Payload  |  Median Latency
+---------|----------------
+8 bytes  |  1.6 μs
+64 bytes |  1.8 μs
+4K bytes |  2.3 μs
+64K bytes|  5.1 μs</pre>
+    `
+  },
+  blog4: {
+    title: "Why AI Clusters Need RoCE: NCCL, Congestion, and PFC Deadlocks",
+    meta: "Jan 22, 2025 · AI Infra · 7 min read",
+    body: `
+<h3>Distributed Training and the All-Reduce Problem</h3>
+<p>When training a large model across hundreds of GPUs, every iteration requires synchronizing gradients across all GPUs. NCCL (NVIDIA Collective Communications Library) implements ring-allreduce, tree-allreduce, and other topologies to minimize communication volume.</p>
+
+<h3>Why RDMA Over RoCE?</h3>
+<p>NCCL can use TCP sockets, but latency is terrible — even at 100 Gbps Ethernet. RoCE v2 brings RDMA semantics over standard Ethernet, cutting latency to ~2μs and offloading the transport protocol entirely to the NIC's ASIC.</p>
+
+<h3>PFC and the Deadlock Problem</h3>
+<p>RoCE is lossless — it relies on Priority Flow Control (PFC) to prevent drops. When a downstream switch buffer fills, it sends a PAUSE frame upstream. The problem: in a fat-tree or Clos fabric, PAUSE frames can propagate and create circular hold-and-wait conditions that deadlock the entire fabric.</p>
+<p>The fix is a combination of: ECN (Explicit Congestion Notification) for early backpressure via DCQCN, careful PFC priority assignment, and lossless path isolation using traffic class separation.</p>
+
+<h3>Practical Notes</h3>
+<p>When tuning RoCE clusters, always check: <code>rdma_rxe</code> vs hardware RoCE, ECN marking thresholds on switch ingress buffers, and NCCL environment variables like <code>NCCL_IB_GID_INDEX</code> and <code>NCCL_NET_GDR_LEVEL</code>.</p>
+    `
+  },
+  blog5: {
+    title: "SR-IOV Deep Dive: Virtual Functions and the VFIO Framework",
+    meta: "Dec 10, 2024 · Kernel · 9 min read",
+    body: `
+<h3>What SR-IOV Does</h3>
+<p>Single Root I/O Virtualization (SR-IOV) is a PCIe spec that lets one physical NIC (Physical Function / PF) expose dozens of lightweight Virtual Functions (VFs) — each looking like a separate NIC to the guest OS. VFs share the hardware but have isolated TX/RX queues, MAC addresses, and VLAN tags.</p>
+
+<h3>Creating VFs</h3>
+<pre># Enable 4 VFs on ens3f0
+echo 4 > /sys/class/net/ens3f0/device/sriov_numvfs
+
+# List VFs
+ip link show ens3f0</pre>
+<p>Each VF gets its own PCI address and can be assigned to a VM or container directly.</p>
+
+<h3>VFIO for Safe Passthrough</h3>
+<p>VFIO (Virtual Function I/O) is the kernel framework for passing VFs to VMs safely. It exposes the device to userspace or QEMU with IOMMU protection — the VM can DMA only into its own memory regions, enforced by the IOMMU/SMMU.</p>
+
+<pre>modprobe vfio-pci
+echo "8086 1520" > /sys/bus/pci/drivers/vfio-pci/new_id</pre>
+
+<h3>Performance vs OVS</h3>
+<p>SR-IOV passthrough eliminates the vSwitch entirely from the data path. Compared to OVS-DPDK (which already removes kernel overhead), SR-IOV VF passthrough reduces latency by another 5-15μs and increases throughput by 10-20% in our benchmarks, at the cost of losing live migration support.</p>
+    `
+  }
+};
+
+function openModal(id) {
+  const post = posts[id];
+  if (!post) return;
+  document.getElementById('modal-content').innerHTML =
+    `<h2>${post.title}</h2><div class="modal-meta">${post.meta}</div><div class="modal-body">${post.body}</div>`;
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAllModals() {
+  document.getElementById('modal-bg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-bg')) closeAllModals();
+}
+
+// Fade-in on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
